@@ -1,3 +1,5 @@
+
+//ARRAY OF PLAYING CARDS FOR DISPLAY
 var cards = [
   ["img/2-Clubs.png","img/2-Hearts.png", "img/2-Spades.png", "img/2-Diamonds.png" ],
   ["img/3-Clubs.png","img/3-Hearts.png", "img/3-Spades.png", "img/3-Diamonds.png" ],
@@ -25,19 +27,18 @@ function BlackJackGame () {
   this.dealerTotal = 0;
 }
 
-// GENERATE CARD
+// GENERATING A RANDOM CARD
 
 BlackJackGame.prototype._getRandomCard = function(){
 
   this.card = Math.floor(Math.random()*13)+1;
 
-
 //2 different value options for Ace
-    if (this.card === 1 && this.total === 20) {
-      this.total += this.card;
-    console.log("randomCard:" + "Card is an Ace " + this.card);
-  } else if (this.card === 1 ) {
+    if (this.card === 1 && this.total <= 10) {
       this.total += 11;
+    console.log("randomCard:" + "Card is an Ace " + this.card);
+  } else if (this.card === 1 && this.total === 20) {
+      this.total += this.card;
     console.log("randomCard:" + "Card is an Ace " + this.card);
 
   } else if (this.card === 11) {
@@ -56,7 +57,7 @@ BlackJackGame.prototype._getRandomCard = function(){
 };
 
 
-// WITH THE HIT FUNCTION CALLING THE _getRandomCard FUNCTION -ALSO DECLARE SHOWN CarDPICTURE
+// THE hit FUNCTION CALLS THE getRandom FUNCTION AS WELL AS ASSIGNS THE CARD PICTURES
 BlackJackGame.prototype.hit = function(){
   this._getRandomCard();
 
@@ -97,6 +98,8 @@ BlackJackGame.prototype.getPictureCard = function(){
   return this.picturePicked;
 };
 
+
+//TO START A NEW GAME ALL TOTALS HAVE TO BE CLEARED
 BlackJackGame.prototype.reset = function(){
   this.player = 0;
   this.card = 0;
@@ -104,9 +107,9 @@ BlackJackGame.prototype.reset = function(){
   this.dealer = 0;
   this.dealerTotal = 0;
   this.dealerCard = 0;
-  this.isWinner = 0;
 };
 
+//SINCE THE PLAYER GETS 2 CARDS AT THE START WE CALL THE FUNCTION TWICE
 BlackJackGame.prototype.startingHand = function (){
   this.hit();
   this.hit();
@@ -125,13 +128,9 @@ BlackJackGame.prototype.isMoreThanTwentyOne = function(){
 };
 
 
-//Dealer
+//IMPLEMENTING THE DEALER
 BlackJackGame.prototype._getDealerCard = function (){
-
-
   this.dealerCard = Math.floor(Math.random()*13)+1;
-
-
 
   if (this.dealerCard >= 2 && this.dealerCard <= 10) {
       this.dealerTotal += this.dealerCard;
@@ -143,7 +142,7 @@ BlackJackGame.prototype._getDealerCard = function (){
     this.dealerTotal += 1;
 
   } else if (this.dealerCard  === 11) {
-      this.total += 10;
+      this.dealerTotal += 10;
     // console.log("Dealer card:" + "Card is a Jack " +  this.dealerCard);
   } else if (this.dealerCard  === 12) {
       this.dealerTotal +=  10;
@@ -155,23 +154,10 @@ BlackJackGame.prototype._getDealerCard = function (){
 
 };
 
-
+//CONTROLLING FOR THE FACT THAT DEALER STOPS TO "hit" AT A TOTAL VALUE OF 17
 BlackJackGame.prototype.isLess17 = function(){
   return this.dealerTotal > 16 ? false : true ;
-
 };
-
-
-
-
-
-BlackJackGame.prototype.stand = function() {
-   if(player.total > 21 || player.total < dealer.dealerTotal){
-    console.log("You lost");
-  } else {console.log("You won");}
-};
-
-
 
 
 BlackJackGame.prototype.is21 = function(){
@@ -179,24 +165,8 @@ BlackJackGame.prototype.is21 = function(){
 };
 
 
-
-// BlackJackGame.prototype.isWinner = function(){
-//   if (this.total === this.dealerTotal){
-//       return false
-//     $("#gamestatus").html("It's a tie!");
-//     $("#dealerTotal").html(dealer.dealerTotal);
-//   } else if (this.total < this.dealerTotal) {
-//     return false
-//     $("#gamestatus").html("You lost");
-//     $("#dealerTotal").html(dealer.dealerTotal);
-//   } else if (this.isMoreThanTwentyOne()) {
-//     return false
-//     $("#gamestatus").html("You lost");
-//     $("#dealerTotal").html(dealer.dealerTotal);
-//   } else if (this.is21()) {
-//     return true
-//     $("#gamestatus").html("!Blackjack!");
-//     $("#dealerTotal").html(dealer.dealerTotal);
-//   }
-//
-// };
+BlackJackGame.prototype.stand = function() {
+   if(player.total > 21 || player.total < dealer.dealerTotal){
+    console.log("You lost");
+  } else {console.log("You won");}
+};
